@@ -10,4 +10,12 @@ for suit in suits do
 end
 
 deck = deck.shuffle()
-puts deck
+
+def deal(deck)
+    playerhand = deck[0..4]
+    deck = deck.drop(5)
+    return playerhand
+end
+
+player1hand = deal(deck)
+p player1hand
