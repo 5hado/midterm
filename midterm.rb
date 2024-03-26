@@ -20,6 +20,17 @@ def deal(deck)
     return playerhand
 end
 
+def check(players)
+    temp = false
+    for i in 1..5
+        if players[i] == true
+            print("Player")
+            temp = true
+        end
+    end
+    return temp
+end
+
 def rank(playerhand)
 
     rank = []
@@ -57,26 +68,26 @@ def highcard(playerhand)
 end
 
 def onepair(playerhand)
+
     playerhand = rank(playerhand)
     for card1 in playerhand
         playerhand = playerhand.drop(1)
         for card2 in playerhand
-            if card1 = card2
+            if card1 == card2
                 return true
             end
         end
     end
+    return false
 end
 
 def twopair(playerhand)
+    # Make sure to put three of a kind before two pair
     playerhand = rank(playerhand)
     pair = 0
     for card1 in playerhand do
         playerhand = playerhand.drop(1)
         for card2 in playerhand do
-            p card1
-            p card2
-            p "===="
             if card1 == card2
                 pair = pair + 1
             end
@@ -85,9 +96,11 @@ def twopair(playerhand)
     if pair == 2
         return true
     end
+    return false
 end
 
 def threeofakind(playerhand)
+    # Make sure to put three of a kind before two pair
     pair = 0
     temp = 0
     playerhand = rank(playerhand)
@@ -164,7 +177,7 @@ def straightflush(playerhand)
     return false
 end
 
-def royalflush(playerhand)
+def royaleflush(playerhand)
     royale = [1,10,11,12,13]
     ranks = rank(playerhand)
 
@@ -174,13 +187,88 @@ def royalflush(playerhand)
     return false
 end
 
-$deck = shuffle
+def play
+    $deck = shuffle
 
-player1hand = deal($deck)
-player2hand = deal($deck)
-player3hand = deal($deck)
-player4hand = deal($deck)
-player5hand = deal($deck)
+    players = []
+    for i in 0...5
+        players.append(deal($deck))
+    end
 
-player1hand = ["CA", "CK", "CQ", "CJ", "C10"]
-p highcard(player1hand)
+
+    result = []
+    for player in players
+        result.append(straightflush(player))
+    end
+
+    if check(result) == true
+        return true
+    end
+
+    result = []
+    for player in players
+        result.append(fullhouse(player))
+    end
+
+    if check(result) == true
+        return true
+    end
+
+    result = []
+    for player in players
+        result.append(flush(player))
+    end
+
+    if check(result) == true
+        return true
+    end
+
+    result = []
+    for player in players
+        result.append(straight(player))
+    end
+
+    if check(result) == true
+        return true
+    end
+
+    result = []
+    for player in players
+        result.append(threeofakind(player))
+    end
+    if check(result) == true
+        return true
+    end
+
+    result = []
+    for player in players
+        result.append(twopair(player))
+    end
+    if check(result) == true
+        return true
+    end
+
+    result = []
+    for player in players
+        result.append(straightflush(player))
+    end
+    if check(result) == true
+        return true
+    end
+
+    result = []
+    for player in players
+        result.append(highcard(player))
+    end
+    print("high card")
+
+
+
+
+end
+play()
+#player1hand = ["CQ", "HQ", "C10", "DA", "C8"]
+#p player1hand
+#p onepair(player1hand)
+# Make sure to put three of a kind before two pair
+#
