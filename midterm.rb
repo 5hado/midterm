@@ -20,17 +20,6 @@ def deal(deck)
     return playerhand
 end
 
-def check(players)
-    temp = false
-    for i in 1..5
-        if players[i] == true
-            print("Player")
-            temp = true
-        end
-    end
-    return temp
-end
-
 def rank(playerhand)
 
     rank = []
@@ -86,16 +75,17 @@ def twopair(playerhand)
     playerhand = rank(playerhand)
     pair = 0
     for card1 in playerhand do
-        playerhand = playerhand.drop(1)
         for card2 in playerhand do
             if card1 == card2
                 pair = pair + 1
+                if pair == 2
+                    return true
+                end
             end
+            pair = 0
         end
     end
-    if pair == 2
-        return true
-    end
+    
     return false
 end
 
@@ -110,12 +100,12 @@ def threeofakind(playerhand)
             if card1 == card2
                 
                 temp = temp + 1
-                p temp
             end
         end
         if temp == 2
             return true
         end
+        temp = 0
     end
     return false
 end
@@ -158,11 +148,11 @@ def fullhouse(playerhand)
         end
     end
 
-    if temp1 == 1 && temp2 == 2
+    if temp1 == 2 and temp2 == 2
         return true
     end
 
-    if temp2 == 1 && temp1 == 2
+    if temp2 == 2 and temp1 == 2
         return true
     end
 
@@ -195,14 +185,21 @@ def play
         players.append(deal($deck))
     end
 
+    for hands in players
+        p hands
+    end
+
 
     result = []
     for player in players
         result.append(straightflush(player))
     end
-
-    if check(result) == true
-        return true
+    
+    for i in result
+        if i == true
+            puts "straightflush"
+            return result
+        end
     end
 
     result = []
@@ -210,8 +207,11 @@ def play
         result.append(fullhouse(player))
     end
 
-    if check(result) == true
-        return true
+    for i in result
+        if i == true
+            puts "fullhouse"
+            return result
+        end
     end
 
     result = []
@@ -219,8 +219,11 @@ def play
         result.append(flush(player))
     end
 
-    if check(result) == true
-        return true
+    for i in result
+        if i == true
+            puts "flush"
+            return result
+        end
     end
 
     result = []
@@ -228,45 +231,59 @@ def play
         result.append(straight(player))
     end
 
-    if check(result) == true
-        return true
+    for i in result
+        if i == true
+            puts "straight"
+            return result
+        end
     end
 
     result = []
     for player in players
         result.append(threeofakind(player))
     end
-    if check(result) == true
-        return true
+    for i in result
+        if i == true
+            puts "threeofakind"
+            return result
+        end
     end
 
     result = []
     for player in players
         result.append(twopair(player))
     end
-    if check(result) == true
-        return true
+    for i in result
+        if i == true
+            puts twopair
+            return result
+        end
     end
 
     result = []
     for player in players
-        result.append(straightflush(player))
+        result.append(onepair(player))
     end
-    if check(result) == true
-        return true
+    
+    for i in result
+        if i == true
+            puts"one pair"
+            return result
+        end
     end
 
     result = []
     for player in players
+        print("high card")
         result.append(highcard(player))
     end
-    print("high card")
+    
 
 
 
 
 end
-play()
+print(play())
 #player1hand = ["CQ", "HQ", "C10", "DA", "C8"]
 #p player1hand
 #p onepair(player1hand)
